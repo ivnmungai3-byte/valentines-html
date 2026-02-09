@@ -37,40 +37,57 @@
             transform: translateY(-10vh) scale(1.2);
             opacity: 0;
         }
-    }
+   .envelope {
+    width: 260px;
+    height: 180px;
+    background: #fdfdfd;
+    border-radius: 10px;
+    position: relative;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
 
-    /* Envelope */
-    .envelope {
-        width: 260px;
-        height: 180px;
-        background: #fdfdfd;
-        position: relative;
-        border-radius: 10px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        cursor: pointer;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+.flap {
+    width: 260px;
+    height: 100px;
+    background: pink;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: top center;
+    transition: transform 1s ease;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
 
-    .seal {
-        width: 60px;
-        height: 60px;
-        background: crimson;
-        border-radius: 50%;
-        position: absolute;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: pink;
-        font-size: 24px;
-        transition: transform 0.6s, opacity 0.6s;
-    }
+.flap.open {
+    transform: rotateX(-180deg);
+}
 
-    .seal.break {
-        transform: scale(0);
-        opacity: 0;
-    }
+.seal {
+    width: 60px;
+    height: 60px;
+    background: crimson;
+    border-radius: 50%;
+    position: absolute;
+    top: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: pink;
+    font-size: 24px;
+    transition: transform 0.6s, opacity 0.6s;
+}
+
+.seal.break {
+    transform: scale(0);
+    opacity: 0;
+}
+
 
     /* Letter */
     .letter {
@@ -125,6 +142,7 @@
 <body>
 
 <div class="envelope" id="envelope">
+    <div class="flap" id="flap"></div>
     <div class="seal" id="seal">❤</div>
 </div>
 
@@ -150,15 +168,25 @@
     }, 300);
 
     // Envelope click
-    document.getElementById("envelope").addEventListener("click", () => {
-        const seal = document.getElementById("seal");
-        seal.classList.add("break");
+   const envelope = document.getElementById("envelope");
+const flap = document.getElementById("flap");
+const seal = document.getElementById("seal");
+const letter = document.getElementById("letter");
 
-        setTimeout(() => {
-            document.getElementById("envelope").style.display = "none";
-            document.getElementById("letter").style.display = "block";
-        }, 600);
-    });
+envelope.addEventListener("click", () => {
+    // Open the flap
+    flap.classList.add("open");
+    // Break the seal after flap opens
+    setTimeout(() => {
+        seal.classList.add("break");
+    }, 800);
+    // Show the letter after seal breaks
+    setTimeout(() => {
+        envelope.style.display = "none";
+        letter.style.display = "block";
+    }, 1500);
+});
+
 
     // Runaway No button
     const noBtn = document.getElementById("noBtn");
